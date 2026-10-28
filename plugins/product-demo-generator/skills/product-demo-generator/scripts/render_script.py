@@ -15,11 +15,24 @@ from pathlib import Path
 from demokit import config as config_module
 
 RULES = """\
+## Why your own voice
+
+The video currently uses a synthetic placeholder voice, for timing only. A real voice — yours, or
+a colleague's — is what makes a demo credible: viewers forgive a slight accent or a breath, not a
+robotic read. No studio needed.
+
 ## How to record
 
+- **Where:** a small, quiet room with soft furnishings (a bedroom beats a meeting room); close
+  the windows, mute notifications. A phone's voice-memo app is fine, held 15–20 cm from your
+  mouth, slightly to the side; a headset or USB microphone is better.
+- **How:** read the script aloud once to warm up, then record at a calm pace (about 150 words a
+  minute), smiling slightly — it shows in the voice.
 - Record **everything in one take, in order**, as a single audio file (wav, mp3 or m4a).
 - Leave **about one second of silence between two scenes**; never read the scene numbers.
 - Short opening words ("One," "Two,") are fine — the split keeps them with their scene.
+- A slip? Pause, say the whole sentence again and carry on; tell Claude which lines you repeated,
+  so the split of those scenes can be checked.
 - A line you skip is not a problem: that scene keeps its picture without voice.
 - Put the file in `voice/` and tell Claude its name.
 """

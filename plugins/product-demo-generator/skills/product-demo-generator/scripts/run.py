@@ -4,7 +4,8 @@
     python run.py doctor                check ffmpeg, the environment and the browser
     python run.py <command> [args...]   run a command inside the tool environment
 
-Commands: new, film, state, script, tts, transcribe, split, montage, brand, slides, sheet, where.
+Commands: new, film, state, script, tts, transcribe, split, music, montage, style, slides, sheet,
+where.
 Run `python run.py <command> --help` for the options of each.
 
 The tool environment (Playwright + Chromium, faster-whisper, Piper TTS) lives in the user's cache
@@ -32,7 +33,9 @@ COMMANDS = {
     "transcribe": "transcribe.py",
     "split": "split_voice.py",
     "montage": "montage.py",
-    "brand": "capture_brand.py",
+    "music": "music_search.py",
+    "style": "capture_style.py",
+    "brand": "capture_style.py",
     "slides": "render_slides.py",
     "sheet": "contact_sheet.py",
     "where": "contact_sheet.py",

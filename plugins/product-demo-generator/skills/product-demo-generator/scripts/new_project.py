@@ -19,7 +19,7 @@ from pathlib import Path
 TEMPLATES = Path(__file__).resolve().parent.parent / "templates"
 FILES = ["demo.toml", "scenes.json", "acts.py", "scenario.md", "inputs.md", "slides/slides.html"]
 FOLDERS = ["voice/placeholder", "takes/live", "takes/retakes", "saves", "montage",
-           "slides/brand"]
+           "slides/style"]
 
 
 def git_root(path: Path) -> Path | None:

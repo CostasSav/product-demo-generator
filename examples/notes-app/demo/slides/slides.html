@@ -5,155 +5,148 @@
 <title>Demo slides</title>
 <!--
   Intro / outro slides, rendered to PNG by `run.py slides` (one file per section's data-file).
-  1. Run `run.py brand <site url>` and paste slides/brand/tokens.css over the :root block below.
-  2. Load the brand's fonts (Google Fonts link below, or @font-face on local files).
-  3. Write the content from scenes.json: one slide per voice line, few words, one idea.
-  Style moves that read as "the brand": its background, its heading font, ONE accent word in
-  italic or colour per headline, small spaced capitals for labels, its card radius and shadow.
+  The look comes from style/tokens.css (and style/fonts.css), written by `run.py style`:
+  by default measured on the app itself, or taken from the user's design system or brand site.
+  Screenshots of the app (style/screen-N.png) are shown in browser frames.
+  Write the text from scenes.json: one slide per voice line, few words, one idea per slide.
 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300..700&display=block" rel="stylesheet">
 <style>
+  /* Neutral defaults, overridden by style/tokens.css below. */
   :root {
-    /* Neutral defaults: replace with the brand's tokens (slides/brand/tokens.css). */
-    --bg: #F7F7F4;
-    --ink: #111318;
-    --muted: #686A74;
-    --accent: #4F46E5;
-    --accent-2: #EC4899;
-    --font-heading: "Fraunces", Georgia, serif;
-    --font-body: "Inter", system-ui, sans-serif;
+    --bg: #FFFFFF; --surface: #F5F6F8; --ink: #14161A; --muted: #5F6570;
+    --accent: #2563EB; --accent-ink: #FFFFFF; --radius: 12px;
+    --font-heading: system-ui, sans-serif; --font-body: system-ui, sans-serif;
   }
+</style>
+<link rel="stylesheet" href="style/fonts.css">
+<link rel="stylesheet" href="style/tokens.css">
+<style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #000; font-family: var(--font-body); color: var(--ink); }
-  .slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; }
-  .light {
-    background:
-      radial-gradient(900px 700px at 78% 30%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
-      radial-gradient(800px 600px at 8% 92%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 70%),
-      var(--bg);
-  }
-  .dark {
-    color: #fff;
-    background:
-      radial-gradient(1000px 700px at 72% 18%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 70%),
-      radial-gradient(800px 600px at 12% 95%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 70%),
-      var(--ink);
-  }
-  .logo { position: absolute; top: 56px; left: 96px; height: 40px; }
-  .dark .logo { filter: brightness(0) invert(1); }
-  .label { font-size: 20px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  .dark .label { color: rgba(255,255,255,.6); }
-  .heading { font-family: var(--font-heading); font-weight: 400; letter-spacing: -.025em; }
-  .accent { font-style: italic; color: var(--accent); font-weight: 300; }
-  .dark .accent { color: color-mix(in srgb, var(--accent) 45%, white); }
+  .slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; background: var(--bg); }
+  .dots { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1.5px, transparent 1.6px);
+    background-size: 28px 28px; background-color: var(--bg); }
+  h1, h2, .name { font-family: var(--font-heading); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+  .hl { color: var(--accent); }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 999px;
+    font-size: 22px; font-weight: 600; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--bg)); }
+  .pill::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .lead { font-size: 32px; line-height: 1.45; color: var(--muted); }
 
-  /* intro 1 — the situation: headline left, a card right */
-  .s1 .left { position: absolute; left: 230px; top: 250px; width: 820px; }
-  .s1 h1 { font-size: 118px; line-height: .98; margin: 34px 0 44px; }
-  .s1 p { font-size: 29px; line-height: 1.5; max-width: 720px; }
-  .card { position: absolute; right: 200px; top: 236px; width: 640px; background: #fff; border-radius: 22px;
-    border: 1px solid rgba(0,0,0,.08); box-shadow: 0 40px 90px -30px color-mix(in srgb, var(--accent) 45%, transparent);
-    padding: 40px 44px 36px; }
-  .card .meta { display: flex; justify-content: space-between; font-size: 18px; color: var(--muted); }
-  .card .title { font-size: 38px; margin: 14px 0 22px; }
-  .card ul { list-style: none; display: grid; gap: 12px; border-top: 1px solid rgba(0,0,0,.1); padding-top: 22px; }
-  .card li { display: flex; gap: 16px; align-items: center; font-size: 21px; }
-  .card li b { width: 66px; text-align: center; font-size: 14px; letter-spacing: .08em; padding: 6px 0;
-    border-radius: 8px; background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
+  /* Browser frame around a screenshot of the app */
+  .frame { position: absolute; background: var(--surface); border-radius: calc(var(--radius) * 1.2); overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+    box-shadow: 0 30px 80px -20px color-mix(in srgb, var(--ink) 35%, transparent); }
+  .frame .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 18px;
+    background: color-mix(in srgb, var(--ink) 6%, var(--surface)); }
+  .frame .bar i { width: 13px; height: 13px; border-radius: 50%; background: color-mix(in srgb, var(--ink) 22%, transparent); }
+  .frame .bar b { margin-left: 18px; flex: 1; height: 26px; border-radius: 13px; background: var(--bg); }
+  .frame img { display: block; width: 100%; height: calc(100% - 46px); object-fit: cover; object-position: top left; }
 
-  /* intro 2 — the cost: a big number left, the explanation right */
-  .s2 .left { position: absolute; left: 230px; top: 250px; width: 720px; }
-  .s2 .number { font-family: var(--font-heading); font-size: 400px; line-height: .9; font-weight: 300; letter-spacing: -.04em;
-    background: linear-gradient(180deg, #fff 10%, color-mix(in srgb, var(--accent) 40%, white)); -webkit-background-clip: text; color: transparent; }
-  .s2 .unit { font-family: var(--font-heading); font-size: 64px; color: var(--accent-2); font-style: italic; vertical-align: top; }
-  .s2 .caption { font-size: 29px; color: rgba(255,255,255,.82); margin-top: 22px; line-height: 1.45; }
-  .s2 .right { position: absolute; left: 1080px; top: 236px; width: 640px; }
-  .s2 h2 { font-size: 62px; line-height: 1.08; }
-  .s2 ul { list-style: none; margin-top: 48px; border-left: 2px solid var(--accent-2); padding: 6px 0 6px 34px; display: grid; gap: 15px; }
-  .s2 li { font-size: 25px; color: rgba(255,255,255,.78); }
+  /* 1 — hero: the promise, and the real product */
+  .hero .text { position: absolute; left: 140px; top: 250px; width: 760px; }
+  .hero h1 { font-size: 92px; margin: 34px 0 34px; }
+  .hero .frame { left: 980px; top: 170px; width: 1120px; height: 740px; }
 
-  /* intro 3 — the product, centred */
-  .s3 .centre { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .s3 h1 { font-size: 196px; line-height: .95; margin: 38px 0 46px; }
-  .s3 p { font-size: 34px; line-height: 1.45; max-width: 1100px; }
+  /* 2 — today: the manual steps */
+  .steps .head { position: absolute; left: 140px; top: 150px; width: 1500px; }
+  .steps h2 { font-size: 70px; margin-top: 28px; }
+  .steps .row { position: absolute; left: 140px; right: 140px; top: 470px; display: grid;
+    grid-template-columns: 1fr 60px 1fr 60px 1fr; align-items: stretch; }
+  .card { background: var(--surface); border-radius: var(--radius); padding: 40px 38px;
+    border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); }
+  .card .n { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 26px;
+    font-weight: 700; color: var(--accent-ink); background: var(--accent); margin-bottom: 26px; }
+  .card h3 { font-family: var(--font-heading); font-size: 36px; margin-bottom: 12px; }
+  .card p { font-size: 25px; line-height: 1.4; color: var(--muted); }
+  .arrow { display: grid; place-items: center; color: var(--accent); font-size: 44px; font-weight: 700; }
+  .steps .cost { position: absolute; left: 140px; bottom: 120px; font-size: 30px; font-weight: 600;
+    padding: 18px 28px; border-radius: var(--radius); border-left: 6px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg)); }
 
-  /* outro — message, guarantees, closing line (hidden on outro1, shown on outro2) */
-  .outro .content { position: absolute; left: 230px; right: 230px; top: 236px; }
-  .outro h1 { font-size: 132px; line-height: 1; margin: 34px 0 78px; }
-  .points { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255,255,255,.16); }
-  .points div { padding: 30px 32px 0 0; }
-  .points b { display: block; font-family: var(--font-heading); font-weight: 400; font-size: 26px; margin-bottom: 12px;
-    color: color-mix(in srgb, var(--accent) 45%, white); }
-  .points span { font-size: 30px; line-height: 1.3; color: rgba(255,255,255,.9); }
-  .closing { position: absolute; left: 230px; bottom: 120px; font-family: var(--font-heading); font-size: 54px;
-    line-height: 1.15; font-style: italic; font-weight: 300; }
-  .closing em { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 45%, white), var(--accent-2));
-    -webkit-background-clip: text; color: transparent; }
-  [data-file="outro1.png"] .closing { opacity: 0; }
+  /* 3 — the product: the accent colour, full bleed */
+  .product { background: var(--accent); color: var(--accent-ink); }
+  .product .text { position: absolute; left: 140px; top: 330px; width: 820px; }
+  .product .name { font-size: 160px; }
+  .product p { font-size: 38px; line-height: 1.4; margin-top: 30px; opacity: .9; }
+  .product .frame { width: 900px; height: 600px; }
+  .product .f1 { left: 1060px; top: 140px; }
+  .product .f2 { left: 1180px; top: 420px; }
+
+  /* Outro: what was shown, then the closing line (hidden on outro1, shown on outro2) */
+  .recap .text { position: absolute; left: 140px; top: 170px; width: 820px; }
+  .recap h2 { font-size: 80px; margin: 30px 0 50px; }
+  .recap ul { list-style: none; display: grid; gap: 26px; }
+  .recap li { display: flex; gap: 22px; align-items: center; font-size: 34px; font-weight: 500; }
+  .recap li svg { flex: none; width: 46px; height: 46px; }
+  .recap .frame { left: 1040px; top: 170px; width: 1000px; height: 640px; }
+  .band { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 140px; background: var(--accent); color: var(--accent-ink); }
+  .band p { font-family: var(--font-heading); font-size: 50px; font-weight: 700; letter-spacing: -0.01em; }
+  .band span { font-size: 28px; opacity: .85; }
+  [data-file="outro1.png"] .band { visibility: hidden; }
 </style>
 </head>
 <body>
 
-<section class="slide light s1" data-file="intro1.png">
-  <img class="logo" src="brand/logo.svg" alt="" onerror="this.remove()">
-  <div class="left">
-    <div class="label">Monday morning · A new request</div>
-    <h1 class="heading">A request <span class="accent">just arrived.</span></h1>
-    <p>One sentence on what is asked, in the viewer's words.</p>
+<section class="slide dots hero" data-file="intro1.png">
+  <div class="text">
+    <span class="pill">Notes</span>
+    <h1>Reports nobody has <span class="hl">time to summarise.</span></h1>
+    <p class="lead">For teams who keep long notes and need the gist, fast.</p>
   </div>
-  <div class="card">
-    <div class="meta"><span>Inbox</span><span>08:47</span></div>
-    <div class="title heading">Subject of the request</div>
+  <div class="frame"><div class="bar"><i></i><i></i><i></i><b></b></div><img src="style/screen-1.png" alt=""></div>
+</section>
+
+<section class="slide steps" data-file="intro2.png">
+  <div class="head">
+    <span class="pill">Today</span>
+    <h2>Today, every summary is <span class="hl">written by hand.</span></h2>
+  </div>
+  <div class="row">
+    <div class="card"><div class="n">1</div><h3>Read</h3><p>Go through the whole report.</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><div class="n">2</div><h3>Extract</h3><p>Pick the key points and risks.</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><div class="n">3</div><h3>Write</h3><p>Turn them into a clear summary.</p></div>
+  </div>
+  <div class="cost">About an hour per report.</div>
+</section>
+
+<section class="slide product" data-file="intro3.png">
+  <div class="text">
+    <div class="name">Notes</div>
+    <p>Your reports, summarised in seconds.</p>
+  </div>
+  <div class="frame f1"><div class="bar"><i></i><i></i><i></i><b></b></div><img src="style/screen-1.png" alt=""></div>
+  <div class="frame f2"><div class="bar"><i></i><i></i><i></i><b></b></div><img src="style/screen-2.png" alt=""></div>
+</section>
+
+<template id="recap">
+  <div class="text">
+    <span class="pill">What you saw</span>
+    <h2>Notes</h2>
     <ul>
-      <li><b>PDF</b>Main document</li>
-      <li><b>XLSX</b>Price grid</li>
-      <li><b>PDF</b>Appendix</li>
+      <li><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="var(--accent)"/><path d="M13 24l7 7 13-15" fill="none" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>Create an item in seconds</li>
+      <li><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="var(--accent)"/><path d="M13 24l7 7 13-15" fill="none" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>One click to summarise</li>
+      <li><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="var(--accent)"/><path d="M13 24l7 7 13-15" fill="none" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>Key points, risks and decision</li>
     </ul>
   </div>
-</section>
-
-<section class="slide dark s2" data-file="intro2.png">
-  <img class="logo" src="brand/logo.svg" alt="" onerror="this.remove()">
-  <div class="left">
-    <div class="label">What it costs today</div>
-    <div><span class="number">7</span><span class="unit">days</span></div>
-    <p class="caption">of work, on average, for each request.</p>
-  </div>
-  <div class="right">
-    <h2 class="heading">Most of it goes into <span class="accent">long</span> tasks, not into what wins.</h2>
-    <ul><li>Read everything</li><li>Search the context</li><li>Build the team</li><li>Write and format</li></ul>
-  </div>
-</section>
-
-<section class="slide light s3" data-file="intro3.png">
-  <div class="centre">
-    <div class="label">Introducing</div>
-    <h1 class="heading">My <span class="accent">App.</span></h1>
-    <p>From the request received to a first draft, with people deciding what matters.</p>
-  </div>
-</section>
-
-<template id="outro">
-  <img class="logo" src="brand/logo.svg" alt="" onerror="this.remove()">
-  <div class="content">
-    <div class="label">My App</div>
-    <h1 class="heading">You decide. <span class="accent">The app prepares.</span></h1>
-    <div class="points">
-      <div><b>01</b><span>Nothing invented</span></div>
-      <div><b>02</b><span>Everything sourced</span></div>
-      <div><b>03</b><span>Every cost capped</span></div>
-      <div><b>04</b><span>Human review required</span></div>
-    </div>
-  </div>
-  <p class="closing">Less time searching,<br><em>more time convincing.</em></p>
+  <div class="frame"><div class="bar"><i></i><i></i><i></i><b></b></div><img src="style/screen-2.png" alt=""></div>
+  <div class="band"><p>Less reading, more deciding.</p><span></span></div>
 </template>
-<section class="slide dark outro" data-file="outro1.png"></section>
-<section class="slide dark outro" data-file="outro2.png"></section>
+<section class="slide dots recap" data-file="outro1.png"></section>
+<section class="slide dots recap" data-file="outro2.png"></section>
 <script>
-  for (const s of document.querySelectorAll("section.outro"))
-    s.append(document.getElementById("outro").content.cloneNode(true));
+  for (const s of document.querySelectorAll("section.recap"))
+    s.append(document.getElementById("recap").content.cloneNode(true));
+  // A missing screenshot: keep the frame, show where it comes from.
+  for (const img of document.querySelectorAll(".frame img")) {
+    const missing = () => img.replaceWith(Object.assign(document.createElement("div"), {
+      textContent: "run.py style → " + img.getAttribute("src"),
+      style: "display:grid;place-items:center;height:calc(100% - 46px);font:24px system-ui;color:var(--muted)"}));
+    if (img.complete && !img.naturalWidth) missing(); else img.onerror = missing;
+  }
 </script>
 </body>
 </html>

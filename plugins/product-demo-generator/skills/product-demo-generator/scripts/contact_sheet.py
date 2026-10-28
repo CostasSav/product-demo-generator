@@ -19,7 +19,7 @@ import tempfile
 from pathlib import Path
 
 from demokit import config as config_module
-from demokit.media import ffmpeg, font
+from demokit.media import duration, ffmpeg, font
 
 
 def seconds(value: str) -> float:
@@ -35,6 +35,9 @@ def clock(value: float) -> str:
 
 
 def sheet(video: Path, times: list[float], width: int, output: Path) -> Path:
+    # A time past the end shows the last frame (ffmpeg would write nothing).
+    last = max(duration(video) - 0.1, 0.0)
+    times = [min(t, last) for t in times]
     with tempfile.TemporaryDirectory() as folder:
         frames = []
         for i, t in enumerate(times):

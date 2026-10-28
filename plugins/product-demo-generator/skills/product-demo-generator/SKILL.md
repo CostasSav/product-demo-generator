@@ -5,7 +5,8 @@ description: >-
   automated filming with Playwright (visible cursor, human-speed typing, crisp 1080p), one live
   pass for costly steps then free retakes from saved app states, placeholder voice-over (local
   TTS), real voice-over split per scene (local Whisper), automatic montage fitted to the voice,
-  branded intro and outro slides, and a timestamp-driven review loop. Use when the user wants to
+  intro and outro slides in the app's own style (or the user's design system), and a
+  timestamp-driven review loop. Use when the user wants to
   film, record or produce a demo, walkthrough, screencast or product video of an app they run
   locally.
 argument-hint: "[path of the app's repository]"
@@ -77,18 +78,36 @@ There are four **gates** where the user decides. Never pass a gate without their
 
 7. **Placeholder voice and retakes.** `RUN script` (recording script `voice/voiceover.md`),
    `RUN tts` (placeholder lines with Piper), then `RUN film --mode retake --act N` for each act:
-   every scene now lasts as long as its line. Retakes never spend anything.
+   every scene now lasts as long as its line. Retakes never spend anything. **Ask the user to
+   record the real voice-over now**, in parallel with the next steps: send them
+   `voice/voiceover.md` (script + recording tips) and say plainly that the synthetic voice is a
+   timing draft that makes a demo sound cheap — their own voice, even recorded on a phone, is the
+   biggest quality gain of the whole video.
 
-8. **Brand slides.** Ask whose brand frames the video (the user's company, usually) and its site.
-   `RUN brand <url>`, adapt `slides/slides.html` (tokens, fonts, one slide per intro/outro line),
-   `RUN slides`, look at every PNG. → [slides](references/slides.md)
+8. **Intro and outro slides.** By default they take the style of **the app itself**:
+   `RUN style --pages /,<a page showing a result>` measures its colours, fonts and corners and
+   screenshots those pages. Ask once whether the user wants another look: a design system file
+   (`RUN style --tokens <file.css|json>`), a brand site (`RUN style --url <site>`), or guidelines
+   (colours, fonts, logo) to write into `slides/style/tokens.css` by hand. Then write the text of
+   `slides/slides.html` from the scene lines, `RUN slides`, and look at every PNG.
+   → [slides](references/slides.md)
 
-9. **Montage.** `RUN montage`, then look at it: `RUN sheet demo/montage/demo.mp4 --at …` on each
+9. **Music and montage.** Propose three tracks: `RUN music --tone corporate` (default tone; ask
+   whether the demo calls for another: upbeat, calm, tech, cinematic, playful, or keywords) finds
+   royalty-free tracks (CC0 / CC BY / CC BY-SA only — commercial use and editing allowed) at least
+   as long as the video, without vocals, and downloads them. If fewer than three come out (a
+   catalogue down, a site refusing downloads), complete with your own web search — see
+   [voice-and-montage](references/voice-and-montage.md) — never bypass a site's protection, give
+   the link instead. Present the three (title, author, length, licence, listen link, why it fits);
+   the user listens and picks: `RUN music --pick N` or `RUN music --use <file> --credit "…"`.
+   The credit goes to `montage/CREDITS.txt`: remind the user to publish it with the video.
+   Then `RUN montage`, and look at it: `RUN sheet demo/montage/demo.mp4 --at …` on each
    scene boundary. Fix what you see before showing it (`montage/plan.txt` lists every scene, its
    take, speed and warnings). → [voice-and-montage](references/voice-and-montage.md)
 
-10. **Real voice — GATE 3.** The user records `voice/voiceover.md` in one take and drops the file
-   in `voice/`. `RUN transcribe <file>`, `RUN split <file>`, read `voice/split.txt` (warnings,
+10. **Real voice — GATE 3.** Strongly recommended, asked again if not done: the user records
+   `voice/voiceover.md` in one take and drops the file in `voice/`. Deliver a video with the
+   placeholder voice only if the user explicitly accepts it, and say so in the hand-over. `RUN transcribe <file>`, `RUN split <file>`, read `voice/split.txt` (warnings,
    missing lines), then `RUN montage`. Optionally re-run the retakes so each scene matches the
    real line exactly, then the montage again.
 
@@ -102,7 +121,7 @@ There are four **gates** where the user decides. Never pass a gate without their
    each (ask first), and hand over: video path, length, spend, what is left to the user.
 
 **Fast path** (no costly scene): skip gate 2 and the live pass; `RUN state save 00-start`,
-retakes only, placeholder voice, montage — a first cut in under an hour.
+retakes only, placeholder voice, montage — a first cut in under an hour (then the user's voice).
 
 ## Rules
 
@@ -116,4 +135,7 @@ retakes only, placeholder voice, montage — a first cut in under an hour.
 - Do not change the app's code to make filming easier without asking; app bugs seen while
   filming are reported with a proposed fix.
 - Look at frames (`RUN sheet`) before claiming a scene or a fix is right.
+- The synthetic voice is a draft: recommend the user's own voice at step 7, again at step 10, and
+  flag it in the hand-over if the video still uses it.
+- Music: only tracks whose licence allows commercial use and modification, credited as required.
 - Nothing is uploaded or published: the video stays on the user's machine.

@@ -53,9 +53,8 @@ def store(state: dict) -> None:
 
 
 def page(title: str, body: str) -> bytes:
-    banner = " · SAFE MODE" if SAFE else ""
     return (f"<!doctype html><html><head><meta charset=utf-8><title>{html.escape(title)}</title>"
-            f"<style>{STYLE}</style></head><body><header>Notes{banner}</header>"
+            f"<style>{STYLE}</style></head><body><header>Notes</header>"
             f"<main>{body}</main></body></html>").encode()
 
 

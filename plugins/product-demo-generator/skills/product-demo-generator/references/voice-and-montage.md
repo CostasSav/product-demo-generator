@@ -37,10 +37,17 @@ voice — en_US-lessac-medium, en_GB-alan-medium, fr_FR-siwis-medium, de_DE-thor
 times the retakes and gives a watchable first cut before anyone records. `--full` writes one file
 with every line, to test the split.
 
+**It is a draft, never the final voice.** A synthetic voice makes a demo sound cheap and costs
+it credibility; the user's own voice — or a colleague's — even recorded on a phone, is the single
+biggest quality gain of the whole video. Ask for the recording as soon as the scene lines are
+final (step 7), ask again before delivery, and flag it in the hand-over if the user chose to keep
+the placeholder. The montage prints a warning while any scene still uses it.
+
 ## Real voice-over
 
-1. `RUN script` → `voice/voiceover.md`: the user records it in one take, in order, about one
-   second of silence between lines, never reading scene numbers.
+1. `RUN script` → `voice/voiceover.md`: the script, plus why and how to record (quiet small room,
+   phone 15–20 cm from the mouth or a headset, one take in order, a second of silence between
+   lines, repeat a sentence after a slip). Send it to the user.
 2. `RUN transcribe <file>` (faster-whisper, local; `voice.whisper_model`: medium is accurate,
    small is faster).
 3. `RUN split <file>` → `voice/<id>.wav` + `voice/split.txt`. Read the warnings: "few words found"
@@ -50,11 +57,34 @@ with every line, to test the split.
    "Two,") stay with their scene even when Whisper mis-times them.
 4. Recorded files always win over placeholders.
 
-## Music and outro
+## Music
 
-`montage.music`: any audio file, looped. It sits `music_gap_db` under the voice's loudness,
-ducks further while the voice speaks, fades in over 2 s and fades out with the outro
-(`outro_s` of last frame, music only). Ask the user for the track (licensed for this use).
+Propose **three** tracks and let the user choose by ear.
+
+1. Agree on the tone: default **corporate** (calm, positive, unobtrusive). Others: `upbeat`,
+   `calm`, `tech`, `cinematic`, `playful`, or `--keywords "piano,minimal"`.
+2. `RUN music --tone <tone>` searches Openverse (Jamendo, Freesound, Wikimedia…), then ccMixter,
+   keeps only licences allowing **commercial use and modification** (CC0, CC BY, CC BY-SA — never
+   NC or ND), drops tracks with vocals, prefers tracks at least as long as the video (from
+   `montage/plan.json`, else estimated) and three different authors, downloads them to
+   `montage/music/` and writes `candidates.md` (length, licence, listen link, credit).
+3. Fewer than three ready (a catalogue unreachable, a site refusing automatic downloads)?
+   Complete with your own web search:
+   - where: Pixabay Music (own licence: free commercial use, no credit), Free Music Archive and
+     Jamendo (filter CC BY / CC0), Incompetech — Kevin MacLeod (CC BY), the YouTube Audio Library
+     (for videos published on YouTube);
+   - check on the track's page: the licence allows commercial use and editing, the length covers
+     the video (or loops cleanly), no vocals;
+   - give the page link: the user listens and downloads it (never work around a site's download
+     protection).
+4. Present the three: title, author, length, licence, link, and one line on why it fits the tone.
+5. The user's choice: `RUN music --pick N`, or `RUN music --use <file> --credit "Music: …"`.
+   Either sets `montage.music` and writes the credit to `montage/CREDITS.txt` — CC BY and BY-SA
+   require it in the video description or on the end screen: tell the user.
+
+In the montage the music is looped if shorter than the video, sits `music_gap_db` under the
+voice's loudness, ducks further while the voice speaks, fades in over 2 s and fades out with the
+outro (`outro_s` of last frame, music only).
 
 ## Review loop
 

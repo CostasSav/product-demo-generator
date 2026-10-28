@@ -1,15 +1,18 @@
 # product-demo-generator
 
 **Turn your web app into a polished, voiced product demo video in an hour.** Automated Playwright
-screen recording, free retakes, AI voice-over (local TTS + Whisper), automatic editing and branded
-intro/outro slides — a Claude Code plugin that makes demo videos fast and redoable scene by scene.
+screen recording, free retakes, voice-over tools (local TTS draft + Whisper split of your own
+recording), royalty-free music suggestions, automatic editing and intro/outro slides in your
+app's own style — a Claude Code plugin that makes demo videos fast and redoable scene by scene.
 
 You describe the demo; Claude writes the scenario and the scene list, films the app with
 Playwright (visible cursor, click highlights, human-speed typing, crisp 1080p), plays costly steps
 (paid API calls, long jobs) **once**, then re-films everything else for free from saved app
-states. A local text-to-speech placeholder times the first cut; your real voice-over is split per
-scene with local Whisper; the montage fits every scene to its line, adds branded intro/outro
-slides, music and an outro. Then you review: "at 2:56 the voice is cut" → Claude maps the
+states. A local text-to-speech placeholder times the first cut — then you record the real
+voice-over (strongly recommended: a synthetic voice makes a demo sound cheap), split per scene
+with local Whisper. Claude proposes three royalty-free tracks that fit the tone and cover the
+whole video; the montage fits every scene to its line and adds intro/outro slides in your app's
+style (or your design system's), the music and an outro. Then you review: "at 2:56 the voice is cut" → Claude maps the
 timestamp to its scene and source, fixes the cause, and re-cuts only that scene.
 
 Everything runs on your machine. Nothing is uploaded.
@@ -47,9 +50,11 @@ Claude follows the pipeline in [SKILL.md](plugins/product-demo-generator/skills/
 5. **you set the budget** for costly steps, if any;
 6. the live pass: costly scenes played once, the app's state saved after each step;
 7. placeholder voice and free retakes of every act;
-8. intro/outro slides in your brand's style;
-9. the montage;
-10. **you record the voice-over** from the generated script; it is split per scene;
+8. intro/outro slides in your app's style — or your design system, or a brand site, if you prefer;
+9. three royalty-free music tracks to choose from (corporate by default, licences allowing
+   commercial use, credit written for you), then the montage;
+10. **you record the voice-over** from the generated script (with recording tips) — the synthetic
+    voice is only a draft; your recording is split per scene;
 11. **you review**; Claude fixes by timestamp;
 12. clean-up: the app is put back as it was, temporary settings reverted.
 
@@ -58,7 +63,7 @@ No costly step? The fast path skips the live pass: a first cut in under an hour.
 ## The tools
 
 `run.py <command> --demo-dir demo …` — `setup`, `doctor`, `new`, `film` (live / retake), `state`
-(save / restore / list), `script`, `tts`, `transcribe`, `split`, `montage`, `brand`, `slides`,
+(save / restore / list), `script`, `tts`, `transcribe`, `split`, `music`, `montage`, `style`, `slides`,
 `sheet` (contact sheets), `where` (what is at 5:38?).
 
 Your app plugs in through `demo/demo.toml`: start commands (normal and safe mode), the items that

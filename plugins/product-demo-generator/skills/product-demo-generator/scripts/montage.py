@@ -42,6 +42,11 @@ from demokit import config as config_module
 from demokit.config import DemoConfig, Scene
 from demokit.media import duration, escape_text, ffmpeg, font, loudness, voice_file
 
+# Every clip is converted to limited-range yuv420p. Recorded footage is full range (JPEG frames)
+# while slides and cards are limited range: concatenated as is, the final encode reads part of the
+# video with the wrong range — a grey veil over the slides that follow footage.
+SAME_RANGE = ",scale=out_range=tv,format=yuv420p"
+
 
 class Montage:
     def __init__(self, config: DemoConfig) -> None:
@@ -156,7 +161,7 @@ class Montage:
         final = max(target, useful / factor)
         ffmpeg("-i", str(raw), "-vf",
                f"setpts=PTS/{factor:.4f},tpad=stop_mode=clone:stop_duration={final:.3f}"
-               f"{self.overlay_filter(overlay)}{self.counter_filter(minutes)}",
+               f"{self.overlay_filter(overlay)}{self.counter_filter(minutes)}{SAME_RANGE}",
                "-t", f"{final:.3f}", *self._encode(), str(output))
         raw.unlink(missing_ok=True)
         info.update({"speed": f"×{factor:.2f}", "duration_s": round(final, 2), "warnings": warnings})
@@ -189,7 +194,7 @@ class Montage:
         ffmpeg("-f", "concat", "-safe", "0", "-i", str(listing), "-c", "copy", str(raw))
         final = max(target, duration(raw))
         ffmpeg("-i", str(raw), "-vf", f"tpad=stop_mode=clone:stop_duration={final:.3f}"
-               f"{self.overlay_filter(overlay)}{self.counter_filter(minutes)}",
+               f"{self.overlay_filter(overlay)}{self.counter_filter(minutes)}{SAME_RANGE}",
                "-t", f"{final:.3f}", *self._encode(), str(output))
         for piece, _ in pieces:
             piece.unlink(missing_ok=True)
@@ -205,6 +210,7 @@ class Montage:
         if subtitle:
             vf += (f",drawtext=fontfile='{self.font}':text='{escape_text(subtitle)}':fontsize=34"
                    ":fontcolor=0xc4b5fd:x=(w-tw)/2:y=(h/2)+50")
+        vf += SAME_RANGE
         ffmpeg("-f", "lavfi", "-i",
                f"color=c=0x0b0b12:s={self.width}x{self.height}:r={self.fps}:d={target:.3f}",
                "-vf", vf, *self._encode(), str(output))
@@ -223,7 +229,8 @@ class Montage:
         ffmpeg("-f", "concat", "-safe", "0", "-i", str(listing), "-vf",
                f"scale={self.width}:{self.height}:force_original_aspect_ratio=decrease,"
                f"pad={self.width}:{self.height}:(ow-iw)/2:(oh-ih)/2:color=black,fps={self.fps}"
-               f"{self.overlay_filter(overlay)}", "-t", f"{total:.3f}", *self._encode(), str(output))
+               f"{self.overlay_filter(overlay)}{SAME_RANGE}", "-t", f"{total:.3f}", *self._encode(),
+               str(output))
         return {"duration_s": round(total, 2), "images": len(images), "warnings": []}
 
     def slide_group(self, group: str) -> tuple[Path, dict[str, float]]:
@@ -410,8 +417,16 @@ def main(argv: list[str] | None = None) -> int:
         lines.append(f"{int(start // 60)}:{start % 60:04.1f}  {e['scene']:6} {e['mode']:11} voice "
                      f"{e['voice_s']:5.1f} s  clip {e['duration_s']:5.1f} s  {e.get('speed', ''):8} "
                      f"{e.get('take', '')}  {'; '.join(e.get('warnings', []))}")
+    placeholders = [e["scene"] for e in plan if "placeholder voice" in e.get("warnings", [])]
+    if placeholders:
+        lines.insert(1, f"!! {len(placeholders)} scene(s) use the PLACEHOLDER voice: not for delivery")
     (config.root / "montage" / "plan.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"montage: {total / 60:.1f} min → {output}")
+    if placeholders:
+        print(f"\n!! {len(placeholders)} of {len(plan)} scenes still use the PLACEHOLDER voice "
+              f"({', '.join(placeholders[:8])}{'...' if len(placeholders) > 8 else ''}).\n"
+              "!! Not for delivery: record the voice-over (voice/voiceover.md), then `run.py transcribe`,\n"
+              "!! `run.py split` and the montage again.")
     return 0
 
 

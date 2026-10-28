@@ -24,6 +24,11 @@ from pathlib import Path
 from demokit import config as config_module
 from demokit.media import ffmpeg
 
+PLACEHOLDER_WARNING = """
+!! PLACEHOLDER VOICE - for timing only. A synthetic voice makes a demo sound cheap and costs it
+!! credibility: record the real voice-over (voice/voiceover.md, `run.py script`), even with a phone
+!! in a quiet room - it is the single biggest quality gain of the whole video."""
+
 
 def voices_dir() -> Path:
     default = Path.home() / ".cache" / "product-demo-generator"
@@ -86,6 +91,7 @@ def main(argv: list[str] | None = None) -> int:
         silence.unlink()
         print(f"full file: {output_dir / 'full.wav'}")
     print(f"{len(written)} placeholder lines in {output_dir}")
+    print(PLACEHOLDER_WARNING)
     return 0
 
 

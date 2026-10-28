@@ -144,7 +144,8 @@ class Recorder:
         self._process = await asyncio.create_subprocess_exec(
             ffmpeg_path(), "-hide_banner", "-loglevel", "error", "-y",
             "-f", "image2pipe", "-framerate", str(self.fps), "-c:v", "mjpeg", "-i", "-",
-            "-vf", f"scale={self.width}:{self.height}:flags=lanczos,format=yuv420p",
+            # limited range, like every other clip of the montage (JPEG frames are full range)
+            "-vf", f"scale={self.width}:{self.height}:flags=lanczos:out_range=tv,format=yuv420p",
             "-c:v", "libx264", "-preset", "superfast", "-crf", str(self.crf),
             "-tune", "stillimage", "-r", str(self.fps), "-movflags", "+faststart",
             str(self.output),

@@ -12,6 +12,7 @@
 | A script restored a fixed save at the end and lost later work | it should give back the state it started from | restore the `_before-restore-…` save taken when it started |
 | Whisper cut a short word into the previous scene | Whisper mis-times "One" / numbers | the split cuts in the first silence after a scene's last word; re-run `split` |
 | The voice drifts behind the picture over the video | clip durations rounded to frames | the montage re-times each scene's audio on its real clip length — do not concatenate audio yourself |
+| Slides after app footage look greyed out (washed-out colours) | footage is full-range video, slides limited range; joined as is, part of the video is read with the wrong range | the montage converts every clip to limited range (`SAME_RANGE`); re-run it — never concatenate clips yourself |
 | The music fade-out is missing | fade before the ducking compressor, or mixed with the video in one graph | the montage fades after the compressor, in a separate audio pass |
 | Downloads from huggingface.co fail (Whisper model, Piper voice) | proxy / firewall / sandbox | retry with network access; models are cached once (`~/.cache/huggingface`, `<tool home>/voices`); `transcribe` uses the cached model first |
 | Package metadata or model files inside the project broke the app's own scanners | ML tooling installed in the repo | the tool environment lives in the user cache (`PRODUCT_DEMO_GENERATOR_HOME`), never in the project |
