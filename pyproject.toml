@@ -1,0 +1,13 @@
+# Development settings only (lint and tests). The plugin itself has no build: its scripts run in
+# the tool environment created by `run.py setup`.
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # typographic characters in texts are intended
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

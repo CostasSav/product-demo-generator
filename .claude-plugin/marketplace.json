@@ -1,0 +1,15 @@
+{
+  "name": "product-demo-generator",
+  "description": "From a running web app to a clean, voiced demo video.",
+  "owner": {
+    "name": "CostasSav"
+  },
+  "plugins": [
+    {
+      "name": "product-demo-generator",
+      "description": "Turn a web app into a clean, voiced demo video, fast: scripted filming, free retakes from saved states, local voice-over tools, automatic montage, branded slides.",
+      "source": "./plugins/product-demo-generator",
+      "category": "productivity"
+    }
+  ]
+}

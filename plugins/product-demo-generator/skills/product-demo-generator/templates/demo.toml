@@ -1,0 +1,83 @@
+# Demo video configuration. Relative paths are relative to this folder.
+
+[project]
+name = "My App"
+language = "en"            # voice-over language (ISO 639-1): transcription and number spelling
+
+[app]
+port = 8765                # a port of its own: the director starts and stops the app itself
+url = "http://127.0.0.1:{port}"
+cwd = ".."                 # where the commands run (usually the repository root)
+# Normal mode (live pass). Leave empty to use an app you started yourself.
+start_command = "python -m myapp.server --port {port}"
+# Safe mode for retakes: nothing paid, sent or irreversible can happen. Empty = same as above
+# (fine when the app has no costly step).
+safe_command = "python -m myapp.server --port {port} --demo"
+ready_path = "/"           # polled until it answers
+safe_log_marker = ""       # regex printed by the app in safe mode: checked in the server log
+start_timeout_s = 90
+env = {}                   # extra environment variables for the app
+
+[browser]
+width = 1920
+height = 1080
+zoom = 1.1                 # 1.1 = browser zoomed to 110 %: bigger, still crisp text
+locale = "en-US"
+headed = false
+timeout_s = 30
+
+[filming]
+typing_ms = 75             # per character, randomised ±45 %
+action_pause_s = 0.9
+pace = 1.0                 # multiplies every pause (0.7 = snappier gestures)
+voice_pad_s = 1.0          # retake scene length = its voice + this
+scroll_container = ""      # CSS selector of the scrolling element if not the document
+dialog_selector = "dialog[open], [role=dialog]"
+confirm_button = "button[type=submit], button:has-text('Confirm')"
+
+[state]
+saves_dir = "saves"
+# A command that exits non-zero while the app runs a job (restores are refused then, and a
+# stop waits for it). Empty = never busy.
+busy_command = ""
+
+# What makes the app's state. Add as many items as needed.
+[[state.items]]
+name = "data"
+kind = "folder"            # folder | file | sqlite | command
+path = "../data"
+exclude = []               # e.g. ["spend.jsonl"]: append-only logs keep their current content
+
+# [[state.items]]
+# name = "db"
+# kind = "sqlite"
+# path = "../app.db"
+
+# [[state.items]]
+# name = "postgres"
+# kind = "command"
+# save = "pg_dump -Fc mydb -f {dir}/db.dump"
+# restore = "pg_restore --clean -d mydb {dir}/db.dump"
+
+[live]
+budget_usd = 0             # 0 = no budget guard; else costly scenes stop once reached
+spend_file = ""            # JSON lines written by the app, one per paid call
+spend_field = "cost_usd"
+
+[voice]
+tts_voice = "en_US-lessac-medium"   # Piper voice for the placeholder voice-over
+whisper_model = "medium"            # small = faster, medium = more accurate
+
+[montage]
+fps = 30
+breath_s = 0.6
+max_realtime_speedup = 2.0
+music = ""                 # e.g. "montage/music.mp3"
+music_gap_db = 10.0
+outro_s = 1.5              # last frame held, music only, faded out
+crossfade_s = 0.8
+counter_label = "real time"
+output = "montage/demo.mp4"
+slideshow_seconds = 1.5
+font = ""                  # drawtext fonts (auto-detected when empty)
+font_bold = ""

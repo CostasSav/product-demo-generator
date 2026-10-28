@@ -1,0 +1,29 @@
+{
+  "_help": "One entry per scene, in video order. mode: realtime | accelerated | slide | slideshow | card. costly: the scene spends money, sends something or takes long — played in the live pass only; restore_after: the save restored instead in retakes. Montage options: take, source_scene, cap_s, segments, real_minutes, overlay, slide, group, images.",
+  "scenes": [
+    {"id": "0.1", "act": 0, "mode": "slide", "slide": "intro1.png", "group": "intro",
+     "screen": "Intro: the situation", "text": "Monday morning. Alex receives a request that usually takes a week to answer."},
+    {"id": "0.2", "act": 0, "mode": "slide", "slide": "intro2.png", "group": "intro",
+     "screen": "Intro: the cost", "text": "Most of that week goes into long, low-value tasks."},
+    {"id": "0.3", "act": 0, "mode": "slide", "slide": "intro3.png", "group": "intro",
+     "screen": "Intro: the product", "text": "Here is how Alex does it with My App."},
+
+    {"id": "1.1", "act": 1, "mode": "realtime", "title": "Home",
+     "screen": "Home page, list of items", "text": "On the home page, Alex sees every item and what to do next."},
+    {"id": "1.2", "act": 1, "mode": "realtime", "title": "Create an item",
+     "screen": "New item form, typing", "text": "Creating one takes a few seconds."},
+
+    {"id": "2.1", "act": 2, "mode": "realtime", "title": "Launch the job",
+     "screen": "Click Generate, confirmation", "text": "Alex launches the generation."},
+    {"id": "2.2", "act": 2, "mode": "accelerated", "title": "Job running", "costly": true,
+     "restore_after": "02-after-generate", "overlay": "Generation",
+     "screen": "Progress until done", "text": "The app does the long work while Alex does something else."},
+    {"id": "2.3", "act": 2, "mode": "realtime", "title": "Result",
+     "screen": "The result", "text": "The result is ready to review."},
+
+    {"id": "9.1", "act": 9, "mode": "slide", "slide": "outro1.png", "group": "outro",
+     "screen": "Outro: what it changes", "text": "You decide. The app prepares."},
+    {"id": "9.2", "act": 9, "mode": "slide", "slide": "outro2.png", "group": "outro",
+     "screen": "Outro: closing line", "text": "Less time searching, more time convincing."}
+  ]
+}

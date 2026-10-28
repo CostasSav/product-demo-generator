@@ -1,0 +1,28 @@
+# The example app's demo. Only what differs from the defaults (see templates/demo.toml).
+
+[project]
+name = "Notes"
+language = "en"
+
+[app]
+port = 8765
+cwd = ".."
+start_command = "python app.py --port {port}"
+safe_command = "python app.py --port {port} --safe"
+safe_log_marker = "SAFE MODE"
+
+[browser]
+zoom = 1.25
+
+[state]
+busy_command = "python busy.py"
+
+[[state.items]]
+name = "data"
+kind = "folder"
+path = "../data"
+exclude = ["spend.jsonl"]
+
+[live]
+budget_usd = 1.0
+spend_file = "../data/spend.jsonl"

@@ -1,0 +1,5 @@
+# Same line endings on every platform (scripts and templates are shared across OSes).
+* text=auto eol=lf
+*.png binary
+*.mp4 binary
+*.wav binary

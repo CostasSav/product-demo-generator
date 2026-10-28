@@ -1,0 +1,10 @@
+{
+  "name": "product-demo-generator",
+  "version": "0.1.0",
+  "description": "Turn a web app into a clean, voiced demo video, fast: scripted Playwright filming with a visible cursor, one live pass for costly steps then free retakes from saved app states, local TTS placeholder and Whisper-split voice-over, automatic montage fitted to the voice, branded intro/outro slides, and a timestamp-driven review loop. Everything runs locally.",
+  "author": {
+    "name": "CostasSav"
+  },
+  "license": "MIT",
+  "keywords": ["demo", "video", "playwright", "screen-recording", "voice-over", "whisper", "tts", "montage"]
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Outputs of the example's demo (recordings, saves, voice, montage, rendered slides)
+examples/*/data/
+examples/*/demo/takes/
+examples/*/demo/saves/
+examples/*/demo/voice/
+examples/*/demo/montage/
+examples/*/demo/slides/*.png
+examples/*/demo/slides/brand/
+examples/*/demo/decisions.md
+.ruff_cache/
